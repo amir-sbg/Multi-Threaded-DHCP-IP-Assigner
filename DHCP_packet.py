@@ -44,13 +44,13 @@ class DHCP_packet:
                 "{:32b}".format(self.__TransactionIdentifier32) + \
                 "{:16b}".format(self.__seconds16) + \
                 "{:16b}".format(self.__flags16) + \
-                "{:32b}".format(self.__ciaddr_ClientIP32) + \
-                "{:32b}".format(self.__yiaddr_YourIP32) + \
-                "{:32b}".format(self.__siaddr_ServerIP32) + \
-                "{:32b}".format(self.__giaddr_GatewayIP32) + \
-                "{:32b}".format(self.__chaddr_ClienHardwaretIP32) + \
-                "{:32b}".format(self.__sname_ServerName32) + \
-                "{:32b}".format(self.__bname_BootFileName32) + \
+                self.ipEncoder(self.__ciaddr_ClientIP32) + \
+                self.ipEncoder(self.__yiaddr_YourIP32) + \
+                self.ipEncoder(self.__siaddr_ServerIP32) + \
+                self.ipEncoder(self.__giaddr_GatewayIP32) + \
+                self.ipEncoder(self.__chaddr_ClienHardwaretIP32) + \
+                self.ipEncoder(self.__sname_ServerName32) + \
+                self.ipEncoder(self.__bname_BootFileName32) + \
                 "{:8b}".format(self.__mcookie_MagicCookie8) + \
                 "{:24b}".format(self.__Options24)).replace(" ", "0")
 
@@ -65,13 +65,13 @@ class DHCP_packet:
         self.__seconds16 = int(message[64:80], 2)
         self.__flags16 = int(message[80:96], 2)
 
-        self.__ciaddr_ClientIP32 = int(message[96:128], 2)
-        self.__yiaddr_YourIP32 = int(message[128:160], 2)
-        self.__siaddr_ServerIP32 = int(message[160:192], 2)
-        self.__giaddr_GatewayIP32 = int(message[192:224], 2)
-        self.__chaddr_ClienHardwaretIP32 = int(message[224:256], 2)
-        self.__sname_ServerName32 = int(message[256:288], 2)
-        self.__bname_BootFileName32 = int(message[288:320], 2)
+        self.__ciaddr_ClientIP32 = self.ipDecoder(int(message[96:128], 2))
+        self.__yiaddr_YourIP32 = self.ipDecoder(int(message[128:160], 2))
+        self.__siaddr_ServerIP32 = self.ipDecoder(int(message[160:192], 2))
+        self.__giaddr_GatewayIP32 = self.ipDecoder(int(message[192:224], 2))
+        self.__chaddr_ClienHardwaretIP32 = self.ipDecoder(int(message[224:256], 2))
+        self.__sname_ServerName32 = self.ipDecoder(int(message[256:288], 2))
+        self.__bname_BootFileName32 = self.ipDecoder(int(message[288:320], 2))
 
         self.__mcookie_MagicCookie8 = int(message[320:328], 2)
         self.__Options24 = int(message[328:352], 2)
@@ -112,6 +112,7 @@ class DHCP_packet:
     # x = "{:03b}".format(3)
 
 
+
 # y = 0xc0a80164
 #
 # print(type(x))
@@ -136,7 +137,19 @@ class DHCP_packet:
 #
 # print(int2ip(0xc0a80164)) # 192.168.1.100
 # print(ip2int('10.0.0.1')) # 167772161
+def ipEncoder( ip):
+        ipL = ip.split(".")
+        ipEncoded = ""
+        for i in ipL:
+            print("{:08b}".format(int(i)))
+            ipEncoded = ipEncoded + "{:08b}".format(int(i))
+        return ipEncoded
 
+def ipDecoder( intIP):
+        ipDecoded = ""
+        for i in range(0, 4):
+            ipDecoded = ipDecoded + str(int(intIP[i * 8:(i + 1) * 8], 2)) + "."
+        return ipDecoded[0:-1]
 
 # x=DHCP_packet(1,2,3,4  ,5,6,1,7,8,9,11,8,2,3,10,2)
 # g=DHCP_packet(6,7,5,4,5,6,6,6,5,6,6,5,4,3,3,45)
@@ -150,5 +163,5 @@ class DHCP_packet:
 # g.printer()
 x = ipEncoder("193.222.224.2")
 print(len(x))
-print(ipDecoder(x))
+print(type(ipDecoder(x)))
 # print(x.split("."))
