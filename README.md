@@ -10,7 +10,7 @@
 
 Concurrent DHCP Network Lab is an educational Python project that explores the building blocks behind a DHCP-style client/server system. It combines UDP socket communication, thread-based request handling, a small IP lease-state object, and a manually encoded packet format.
 
-The repository currently contains two related experiments. `Server.py` and `clientt.py` form the runnable threaded UDP reference path on port `8888`. `Client.py` and `MulthiThreadServer.py` sketch the intended `DISCOVER → OFFER → REQUEST → ACK` negotiation on port `8080`, while `DHCP_packet.py` and `IP.py` provide supporting serialization and lease-state concepts. The core engineering focus is therefore networking, concurrency, state management, and protocol design rather than a machine-learning model.
+The repository currently contains two related experiments. `Server.py` and `clientt.py` form the runnable threaded UDP reference path on port `8888`. `Client.py` and `MulthiThreadServer.py` sketch the intended `DISCOVER → OFFER → REQUEST → ACK` negotiation on port `8080`, while `DHCP_packet.py` and `IP.py` provide supporting serialization and lease-state concepts. The core engineering focus is networking, concurrency, state management, and protocol design.
 
 ## What the project demonstrates
 
@@ -102,7 +102,3 @@ python3 -m py_compile *.py
 ```
 
 The command passes for the checked-in sources. Runtime behavior should be evaluated locally and on a non-privileged test port; this project is an educational protocol prototype, not a replacement for a standards-compliant DHCP implementation.
-
-## License
-
-No license file is currently included. Add one before distributing or reusing the project as a library.
